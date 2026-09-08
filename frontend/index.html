@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Campus AI Workshop & Hackathon RSVP Portal. Real-time seat allocation, duplicate prevention, and live attendee headcount roster for college technical symposiums.">
+  <title>Campus AI Workshop &amp; Hackathon RSVP Portal</title>
+  
+  <!-- Modern Typography: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">CAMPUS<span class="highlight">.AI</span></span>
+          <span class="brand-subtitle">Symposium &amp; Hackathon RSVP</span>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#workshopsSection" class="nav-link active" id="navWorkshops">Workshops</a>
+        <a href="#rosterSection" class="nav-link" id="navRoster">Live Headcount</a>
+        <a href="#architectureSection" class="nav-link" id="navArch">3-Tier Architecture</a>
+      </nav>
+
+      <div class="system-status">
+        <span class="status-indicator live-pulse" id="backendStatusIndicator"></span>
+        <span class="status-label" id="backendStatusText">Live Sync: 8080</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="heroSection">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Annual Technical Symposium 2026 • AI Track</span>
+        </div>
+        <h1 class="hero-title">Campus AI Workshop &amp; Hackathon RSVP Portal</h1>
+        <p class="hero-description">
+          Eliminating manual overbooking and auditorium seat shortages. Real-time seat allocation, duplicate email detection, and transparent attendee headcounts powered by a robust 3-tier architecture.
+        </p>
+
+        <!-- Live KPI Metric Counters -->
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi-card" id="kpiTotalSeats">
+            <span class="kpi-value" id="kpiTotalSeatsVal">355</span>
+            <span class="kpi-label">Total Venue Capacity</span>
+          </div>
+          <div class="kpi-card" id="kpiClaimedSeats">
+            <span class="kpi-value highlight-cyan" id="kpiClaimedSeatsVal">323</span>
+            <span class="kpi-label">Seats Reserved</span>
+          </div>
+          <div class="kpi-card" id="kpiAvailableSeats">
+            <span class="kpi-value highlight-green" id="kpiAvailableSeatsVal">32</span>
+            <span class="kpi-label">Seats Remaining</span>
+          </div>
+          <div class="kpi-card" id="kpiRegistrationsCount">
+            <span class="kpi-value highlight-purple" id="kpiRegistrationsVal">6</span>
+            <span class="kpi-label">Verified Attendees</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workshop Catalog Section -->
+    <section class="catalog-section" id="workshopsSection">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Upcoming AI Workshops &amp; Hackathon</h2>
+          <p class="section-subtitle">Browse technical sessions, speaker bios, and live seating headroom.</p>
+        </div>
+        <div class="filter-controls">
+          <button class="filter-btn active" data-filter="all" id="filterAll">All Tracks</button>
+          <button class="filter-btn" data-filter="bootcamp" id="filterBootcamp">Bootcamps</button>
+          <button class="filter-btn" data-filter="hackathon" id="filterHackathon">Hackathon</button>
+        </div>
+      </div>
+
+      <!-- CSS Grid Workshop Cards Container -->
+      <div class="workshop-grid" id="workshopGrid" aria-live="polite">
+        <!-- Dynamically rendered via app.js -->
+        <div class="loading-placeholder">Loading workshops and live seat allocations...</div>
+      </div>
+    </section>
+
+    <!-- Live Headcount Roster Section -->
+    <section class="roster-section" id="rosterSection">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Live Attendee Headcount Roster</h2>
+          <p class="section-subtitle">Real-time attendance registry for symposium coordinators and check-in desks.</p>
+        </div>
+        <div class="roster-toolbar">
+          <div class="search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="rosterSearchInput" placeholder="Search by name, email, or department..." aria-label="Search attendee roster">
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btnRefreshRoster" title="Sync live headcount">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6"></path>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Roster Table -->
+      <div class="table-container">
+        <table class="roster-table" id="rosterTable">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Attendee Name</th>
+              <th scope="col">College Email</th>
+              <th scope="col">Department</th>
+              <th scope="col">Workshop / Session</th>
+              <th scope="col">Tickets</th>
+              <th scope="col">Registered At</th>
+              <th scope="col" class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rosterTableBody">
+            <!-- Dynamically populated via app.js -->
+            <tr>
+              <td colspan="8" class="text-center py-6">Loading verified registrations...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Architecture & Verification Section -->
+    <section class="arch-section" id="architectureSection">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">3-Tier Production Architecture</h2>
+          <p class="section-subtitle">Separation of concerns: <code>Frontend (5500)</code> &rarr; <code>Spring Boot (8080)</code> &rarr; <code>MySQL 8.0 (3306)</code>.</p>
+        </div>
+      </div>
+
+      <div class="arch-cards-grid">
+        <div class="arch-tier-card tier-presentation">
+          <div class="tier-badge">Tier 1 • Port 5500</div>
+          <h3>Presentation Layer</h3>
+          <p class="tier-tech">Semantic HTML5 • CSS Grid • Vanilla JS ES6</p>
+          <ul class="tier-features">
+            <li>Dynamic real-time seat headroom calculation</li>
+            <li>Accessible <code>&lt;dialog&gt;</code> modal &amp; ticket toggle (1-2)</li>
+            <li>Client-side validation &amp; instant duplicate warning toasts</li>
+            <li>Responsive desktop &amp; mobile responsive layout</li>
+          </ul>
+        </div>
+
+        <div class="arch-tier-card tier-application">
+          <div class="tier-badge">Tier 2 • Port 8080</div>
+          <h3>Business Logic API</h3>
+          <p class="tier-tech">Java 17 • Spring Boot 3 • Spring Data JPA</p>
+          <ul class="tier-features">
+            <li>Transactional capacity verification (<code>@Transactional</code>)</li>
+            <li>Duplicate email detection per workshop (HTTP 409 Conflict)</li>
+            <li>Strict ticket bounds (1-2 seats, HTTP 400 Bad Request)</li>
+            <li>REST Endpoints: <code>POST/GET/DELETE /api/registrations</code></li>
+          </ul>
+        </div>
+
+        <div class="arch-tier-card tier-database">
+          <div class="tier-badge">Tier 3 • Port 3306</div>
+          <h3>Relational Database</h3>
+          <p class="tier-tech">MySQL 8.0 Community • InnoDB Engine</p>
+          <ul class="tier-features">
+            <li><code>UNIQUE KEY uk_event_email (event_id, attendee_email)</code></li>
+            <li>Foreign Key constraints with cascade updates</li>
+            <li>Check constraint <code>chk_tickets (1 OR 2)</code></li>
+            <li>ACID transactions preventing overselling during traffic bursts</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Accessible RSVP Dialog Modal -->
+  <dialog class="rsvp-modal" id="rsvpModal" aria-labelledby="modalTitle">
+    <div class="modal-wrapper">
+      <div class="modal-header">
+        <div>
+          <span class="modal-kicker" id="modalKicker">Workshop Reservation</span>
+          <h3 class="modal-title" id="modalTitle">Reserve Your Seat</h3>
+        </div>
+        <button class="btn-close" id="btnCloseModal" aria-label="Close RSVP modal">&times;</button>
+      </div>
+
+      <!-- Real-time Workshop Headroom Summary inside modal -->
+      <div class="modal-event-summary" id="modalEventSummary">
+        <div class="summary-meta">
+          <span class="summary-venue" id="modalVenue">Turing Hall Auditorium 101</span>
+          <span class="summary-seats" id="modalSeatsBadge">42 seats left</span>
+        </div>
+      </div>
+
+      <!-- Inline Feedback / Error Banner -->
+      <div class="alert-banner hidden" id="modalAlertBanner" role="alert"></div>
+
+      <!-- Registration Form -->
+      <form id="rsvpForm" novalidate>
+        <input type="hidden" id="formEventId" name="eventId">
+
+        <div class="form-group">
+          <label for="formAttendeeName">Full Name <span class="required">*</span></label>
+          <input type="text" id="formAttendeeName" name="attendeeName" required placeholder="e.g. Alex Rivera" autocomplete="name">
+          <span class="field-hint">Your name as it should appear on the attendee badge.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="formAttendeeEmail">College Email Address <span class="required">*</span></label>
+          <input type="email" id="formAttendeeEmail" name="attendeeEmail" required placeholder="e.g. alex.rivera@campus.edu" autocomplete="email">
+          <span class="field-hint">Must be unique per workshop (duplicate emails are blocked).</span>
+        </div>
+
+        <div class="form-group">
+          <label for="formDepartment">Academic Department <span class="required">*</span></label>
+          <select id="formDepartment" name="department" required>
+            <option value="">Select your department...</option>
+            <option value="Computer Science & Eng">Computer Science &amp; Engineering</option>
+            <option value="Data Science & Analytics">Data Science &amp; Analytics</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Electronics & Comm">Electronics &amp; Communication</option>
+            <option value="Robotics & Mechatronics">Robotics &amp; Mechatronics</option>
+          </select>
+        </div>
+
+        <!-- Ticket Selector (Strict 1-2 seats) -->
+        <div class="form-group">
+          <label id="ticketGroupLabel">Number of Seats (Max 2 per attendee) <span class="required">*</span></label>
+          <div class="ticket-radio-group" role="radiogroup" aria-labelledby="ticketGroupLabel">
+            <label class="ticket-radio-label">
+              <input type="radio" name="tickets" value="1" checked id="ticket1">
+              <span class="ticket-radio-card">
+                <span class="ticket-num">1 Seat</span>
+                <span class="ticket-desc">Solo attendee reservation</span>
+              </span>
+            </label>
+            <label class="ticket-radio-label">
+              <input type="radio" name="tickets" value="2" id="ticket2">
+              <span class="ticket-radio-card">
+                <span class="ticket-num">2 Seats</span>
+                <span class="ticket-desc">You + Hackathon/Project Partner</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCancelForm">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitRsvp">
+            <span class="btn-spinner hidden" id="rsvpSpinner"></span>
+            <span class="btn-text" id="rsvpBtnText">Confirm Reservation</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Confirmation Success Dialog -->
+  <dialog class="rsvp-modal confirmation-modal" id="confirmationModal">
+    <div class="modal-wrapper text-center">
+      <div class="success-icon-wrapper">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3 class="modal-title" id="confirmTitle">RSVP Confirmed!</h3>
+      <p class="confirm-message" id="confirmMessage">You have successfully secured your seat for the technical workshop.</p>
+      
+      <div class="confirmation-ticket" id="confirmationTicket">
+        <div class="ticket-row">
+          <span class="ticket-label">Confirmation ID:</span>
+          <span class="ticket-data" id="confirmId">#REG-000</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Attendee:</span>
+          <span class="ticket-data" id="confirmName">Alex Rivera</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Event:</span>
+          <span class="ticket-data" id="confirmEvent">Generative AI Bootcamp</span>
+        </div>
+        <div class="ticket-row">
+          <span class="ticket-label">Seats Reserved:</span>
+          <span class="ticket-data" id="confirmSeats">2 Seats</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="btnCloseConfirmation">Done</button>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>&copy; 2026 Campus AI Symposium Committee. Built with Semantic HTML5, CSS Grid, Spring Boot 3 &amp; MySQL 8.0.</p>
+      <div class="footer-links">
+        <span>3-Tier Architecture Verification: <code>5500 &rarr; 8080 &rarr; 3306</code></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Compiled Java / Maven target output
+backend/target/
+**/target/
+*.class
+
+# Maven Wrapper runtime downloads
+.mvn/wrapper/maven-wrapper.jar
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# IDE and Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.iml
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+logs/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
